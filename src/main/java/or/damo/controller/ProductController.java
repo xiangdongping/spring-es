@@ -47,7 +47,7 @@ public class ProductController {
     @GetMapping("/search/{name}")
     public Page<Product> searchByName(@PathVariable("name") String name,BasePage page){
         MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("name", name);
-        PageRequest of = PageRequest.of(page.getPage(), page.getSize(),Sort.Direction.DESC);
+        PageRequest of = PageRequest.of(page.getPage(), page.getSize(),new Sort(Sort.Direction.DESC,"shelDateLong"));
         Page<Product> search = productRepository.search(queryBuilder,of);
 
         search.forEach(e -> {

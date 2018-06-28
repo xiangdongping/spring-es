@@ -2,12 +2,12 @@ package or.damo.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by xdp on 2018/6/25.
@@ -70,5 +70,8 @@ public class Product {
     @Field(index = false,type=FieldType.Integer)
     private Integer status;
 
+
+    @Field(type = FieldType.Nested)
+    private List<Comment> comments;
 
 }

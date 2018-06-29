@@ -1,5 +1,5 @@
 spring:
   data:
     elasticsearch:
-      cluster-nodes: xdp.com:9200
+      cluster-nodes: xdp.com:9300
       cluster-name: elasticsearch

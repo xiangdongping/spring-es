@@ -11,6 +11,7 @@ public class SpringEsApplicationTests {
 
 	@Test
 	public void contextLoads() {
+
 	}
 
 }

@@ -1,7 +1,6 @@
 package or.damo.entity;
 
 import lombok.Data;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -10,6 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ *
+ * elasticSerach 5.x 以后变化很多大
+ *
  * Created by xdp on 2018/6/25.
  * @author  xdp
  */
@@ -56,8 +58,8 @@ public class Product {
     /**
      * 上架时间
      */
-    @Transient
 //   @fixme 此处有bug  @Field(type = FieldType.Date,format = DateFormat.year_month_day)
+    @Field(type = FieldType.Long)
     private Date shelfDate;
 
 

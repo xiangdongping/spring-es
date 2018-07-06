@@ -1,6 +1,8 @@
 package or.damo.entity;
 
 import lombok.Data;
+import lombok.ToString;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -17,6 +19,7 @@ import java.util.List;
  */
 @Document(indexName = "product-index",type = "product")
 @Data
+@ToString
 public class Product {
     @Field(type = FieldType.Integer)
     private Integer id;
@@ -52,7 +55,7 @@ public class Product {
     /**
      * 库存
      */
-    @Field(index = false,type=FieldType.Integer)
+    @Field(type=FieldType.Integer)
     private Integer stock;
 
     /**
@@ -69,11 +72,19 @@ public class Product {
     /**
      * 状态
      */
-    @Field(index = false,type=FieldType.Integer)
+    @Field(type=FieldType.Integer)
     private Integer status;
 
 
     @Field(type = FieldType.Nested)
     private List<Comment> comments;
+
+    /**
+     * 用来实现乐观锁的版本号 ， elastic-search 会在更新操作的时候判断
+     * 放进去的版本是否大于原先版本，如果不大于说明可能已经被其他线程或者进程所改变。
+     * 这时会抛出 VersionConflictException 异常
+     */
+    @Version
+    private Long version;
 
 }

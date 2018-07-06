@@ -2,7 +2,10 @@
 spring:
   data:
     elasticsearch:
-      cluster-nodes: 119.23.23.112:9300
+      cluster-nodes: xdp.com:9300
       cluster-name: elasticsearch
+  redis:
+    host: xdp.com
+    port: 63770
 server:
   port: 80

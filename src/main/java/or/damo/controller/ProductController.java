@@ -1,10 +1,9 @@
 package or.damo.controller;
 
 import or.damo.entity.Product;
-import or.damo.po.ProductRepository;
-import org.elasticsearch.index.query.BoolQueryBuilder;
+import or.damo.es.ProductESRepository;
+import or.damo.service.ProductService;
 import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author xdp
@@ -24,7 +22,10 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductESRepository productRepository;
+
+    @Autowired
+    private ProductService productService;
 
     @PostMapping
     public Boolean save(@RequestBody Product product){
@@ -56,4 +57,21 @@ public class ProductController {
         return  search;
     }
 
+    @GetMapping("/stock/update")
+    public Boolean updateStock(@RequestParam("productId") Integer productId,@RequestParam("stock") Integer stock){
+        Boolean result = productService.updateStock(productId, stock);
+        return  result;
+    }
+
+    @GetMapping("/stock")
+    public Integer stock(@RequestParam("productId") Integer productId){
+        Integer stock = productService.getStock(productId);
+        return stock;
+    }
+    @GetMapping ("stock/sub")
+    public Boolean subStock(@RequestParam("productId") Integer productId, @RequestParam("num")Integer num){
+        Boolean aBoolean = productService.subStock(productId, num);
+
+        return  aBoolean;
+    }
 }

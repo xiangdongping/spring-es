@@ -7,5 +7,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
  * Created by xdp on 2018/6/26.
  * @author xdp
  */
-public interface ProductEsRepository extends ElasticsearchRepository<Product,Integer>{
+public interface  ProductRepository extends ElasticsearchRepository<Product,Integer>{
 }

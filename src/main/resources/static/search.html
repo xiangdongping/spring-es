@@ -23,7 +23,12 @@
 </div>
 
 <script>
+    $(document).keydown(function (event) {
+         if(event.keyCode === 13){
 
+             $.get("/commodity/search?")
+         }
+    })
 </script>
 </body>
 </html>

@@ -7,28 +7,122 @@
     <link href="boot/css/bootstrap.min.css" rel="stylesheet">
     <script src="boot/js/bootstrap.min.js"></script>
 </head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    ul li{
+        list-style: none;
+    }
+</style>
 <body>
 <div class="container">
     <form action="" class="form-horizontal" role="form-horizontal">
         <div class="input-group">
-            <span class="input-group-addon">搜索商品</span>
-            <input type="text" class="form-control" placeholder="输入商品名或者描述">
+            <input type="text" class="form-control" name="content" id="search-content" placeholder="输入商品名或者描述">
+            <span class="input-group-btn">
+                <button class="btn btn-info" id="search">搜索商品</button>
+            </span>
         </div>
         <br>
+
+
+        <div class="row">
+            <div class="col-lg-2">
+                <select class="form-control" name="priceOrder" id="price-order">
+                    <option value="DESC">价格降序</option>
+                    <option value="ASE">价格升序</option>
+                </select>
+            </div>
+
+            <div class="col-lg-3">
+                价格区间
+                <input type="number" value="0" style="width: 80px; height: 34px;" name="beginPrice" id="begin-price" placeholder="最低">
+                -
+                <input type="number" value="99999" style="width: 80px; height: 34px;" name="endPrice" id="end-price" placeholder="最高">
+            </div>
+
+            <div class="col-lg-2">
+                <label class="radio-inline">
+                    <input type="checkbox" name="stock" id="stock" value="true" id="stock"> 只看有货
+                </label>
+            </div>
+        </div>
+
     </form>
+
+
+    <br>
+
+    <div class="content" id="content">
+
+
+
+    </div>
+
+    <nav class="text-center" hidden="hidden">
+        <ul class="pagination">
+            <li><a href="#">&laquo;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li class="disabled"><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+    </nav>
 </div>
 
-<div class="container" id="list">
-
-</div>
 
 <script>
-    $(document).keydown(function (event) {
-         if(event.keyCode === 13){
+    $("#search").click(function (event) {
+        event.preventDefault();
 
-             $.get("/commodity/search?")
-         }
-    })
+        if($("#search-content").val() === ""){
+            alert("请输入 搜索关键字!");
+            return ;
+        }
+
+        var buildPara = build_para();
+
+        var para="";
+        for (var i in buildPara){
+            para+=i+"="+buildPara[i]+"&";
+        }
+
+        $.get("/commodity/search?"+para.substr(0,para.length-1),function (data) {
+
+            var content = data.content;
+
+            console.log(content);
+            if(content != null){
+                html="<ul>"
+                for(var i =0; i< content.length;i++){
+                    html+="<li>"
+                        html+="<a href='/commodity/"+content[i].id+"'>"+content[i].title+"</a>";
+                        html+="<p>"+content[i].sellPoint+"</p>";
+                        html+="<p class='price'> 价格 "+content[i].price/100+"</p>";
+                    html+="</li>"
+                }
+                html+="</ul>"
+
+                var contentHtml = document.getElementById('content');
+                contentHtml.innerHTML=html;
+
+            }
+        });
+    });
+
+    function build_para(){
+        return {
+            "content":$("#search-content").val(),
+            "priceOrder":$("#price-order").val(),
+            "beginPrice":parseInt($("#begin-price").val()),
+            "endPrice":parseInt($("#end-price").val()),
+            "stock":$("#stock").val()
+        }
+    }
 </script>
 </body>
 </html>
